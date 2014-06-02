@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Soliant\\GoalioForgotPasswordSimpeFM\\": "src/"
+            "Soliant\\GoalioForgotPasswordSimpleFM\\": "src/"
         }
     }
 }
