@@ -1,6 +1,6 @@
 {
     "name": "soliantconsulting/goalio-forgot-password-simple-fm",
-    "description": "A SimpleFM ZFC User adapter for the Goalio forgot password moduled",
+    "description": "A SimpleFM ZFC User adapter for the Goalio forgot password module",
     "type": "library",
     "license": "MIT",
     "keywords": [
