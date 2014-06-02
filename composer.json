@@ -1,5 +1,5 @@
 {
-    "name": "soliantconsulting/GoalioForgotPasswordSimpleFM",
+    "name": "soliantconsulting/goalio-forgot-password-simple-fm",
     "description": "A SimpleFM ZFC User adapter for the Goalio forgot password moduled",
     "type": "library",
     "license": "MIT",
@@ -22,8 +22,8 @@
         "soliantconsulting/simplefm": "dev-master",
         "zendframework/zendframework": "2.3.*",
         "zf-commons/zfc-user": "1.*",
-        "soliantconsulting/zfc-user-simplefm": "dev-master"
-        "goalio/goalio-forgotpassword": "dev-master",
+        "soliantconsulting/zfc-user-simplefm": "dev-master",
+        "goalio/goalio-forgotpassword": "dev-master"
     },
     "autoload": {
         "psr-4": {
