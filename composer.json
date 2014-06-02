@@ -1,0 +1,33 @@
+{
+    "name": "soliantconsulting/GoalioForgotPasswordSimpleFM",
+    "description": "A SimpleFM ZFC User adapter for the Goalio forgot password moduled",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "filemaker",
+        "simplefm"
+    ],
+    "homepage": "http://soliantconsulting.com",
+    "authors": [
+        {
+            "name": "Tom Anderson",
+            "email": "tanderson@soliantconsulting.com"
+        }
+    ],
+    "require-dev": {
+        "fabpot/php-cs-fixer": "dev-master"
+    },
+    "require": {
+        "php": ">=5.4.3",
+        "soliantconsulting/simplefm": "dev-master",
+        "zendframework/zendframework": "2.3.*",
+        "zf-commons/zfc-user": "1.*",
+        "soliantconsulting/zfc-user-simplefm": "dev-master"
+        "goalio/goalio-forgotpassword": "dev-master",
+    },
+    "autoload": {
+        "psr-4": {
+            "Soliant\\GoalioForgotPasswordSimpeFM\\": "src/"
+        }
+    }
+}
