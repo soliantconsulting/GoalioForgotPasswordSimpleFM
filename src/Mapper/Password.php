@@ -3,17 +3,18 @@
 namespace Soliant\GoalioForgotPasswordSimpleFM\Mapper;
 
 use Soliant\SimpleFM\ZF2\Gateway\AbstractGateway;
-use Soliant\ZfcUserSimpleFM\Entity\User as UserEntity;
+use Soliant\GoalioForgotPasswordSimpleFM\Entity\Password as PasswordEntity;
 use Traversable;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 use Soliant\SimpleFM\Adapter as DbAdapter;
+use GoalioForgotPassword\Mapper\PasswordMapperInterface;
 
-class Password extends AbstractGateway implements EventManagerAwareInterface
+class Password extends AbstractGateway implements EventManagerAwareInterface, PasswordMapperInterface
 {
-    protected $tableName  = 'password';
+    protected $tableName  = 'web_password';
     protected $dbAdapter;
     protected $entity;
     protected $hydrator;
@@ -42,7 +43,7 @@ class Password extends AbstractGateway implements EventManagerAwareInterface
         return $this->hydrator;
     }
 
-    public function setEntityPrototype(UserEntity $entity)
+    public function setEntityPrototype(PasswordEntity $entity)
     {
         $this->entity = $entity;
 
@@ -61,13 +62,89 @@ class Password extends AbstractGateway implements EventManagerAwareInterface
         return $this;
     }
 
+    public function remove($passwordModel)
+    {
+#        $sql = new Sql($this->getDbAdapter(), $this->tableName);
+#        $delete= $sql->delete();
+#        $delete->where->equalTo($this->keyField, $passwordModel->getRequestKey());
+
+        return true;
+    }
+
+    public function findByUserId($userId)
+    {
+        $entity = $this->findOneBy(array(
+            'user_id' => $userId,
+        ));
+
+        return $entity;
+    }
+
+    public function findByRequestKey($key)
+    {
+        $entity = $this->findOneBy(array(
+            'request_key' => $key,
+        ));
+
+        return $entity;
+    }
+
+    public function cleanExpiredForgotRequests($expiryTime=86400)
+    {
+        $now = new \DateTime((int)$expiryTime . ' seconds ago');
+
+#        $sql = new Sql($this->getDbAdapter(), $this->tableName);
+#        $delete = $sql->delete();
+#        $delete ->where->lessThanOrEqualTo($this->reqtimeField, $now->format('Y-m-d H:i:s'));
+
+        return true;
+    }
+
+    public function cleanPriorForgotRequests($userId)
+    {
+        $oldEntities = $this->findBy(array(
+            'user_id' => $userId
+        ));
+
+        foreach ((array) $oldEntites as $entity) {
+            $this->delete($entity);
+        }
+
+        return true;
+    }
+
+    public function findByUserIdRequestKey($userId, $token)
+    {
+        $entity = $this->findOneBy(array(
+            'user_id' => $userId,
+            'request_key' => $token,
+        ));
+
+        return $entity;
+    }
+
+    public function fromRow($row)
+    {
+throw new \Exception('fromRow not handled');
+        if (!$row) return false;
+        $evr = Model::fromArray($row->getArrayCopy());
+        return $evr;
+    }
+
+    public function toScalarValueArray($passwordModel)
+    {
+        $hydrator = new \Zend\Stblib\Hydrator\ArraySerializable;
+
+        return $hydrator->extract($passwordModel);
+    }
+
     public function findByEmail($email)
     {
+die('find by email');
+
         $entity = $this->findOneBy(array(
             'email' => $email
         ));
-
-        $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
 
         return $entity;
     }
@@ -90,6 +167,11 @@ class Password extends AbstractGateway implements EventManagerAwareInterface
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
 
         return $entity;
+    }
+
+    public function persist($entity)
+    {
+        $this->insert($entity);
     }
 
     public function getTableName()

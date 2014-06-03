@@ -16,14 +16,14 @@ class Password extends AbstractEntity
         }
     }
 
-    protected $user_id;
+    protected $userId;
     protected $requestKey;
     protected $requestTime;
 
     public function getArrayCopy()
     {
         return array(
-            'user_id' => $this->getUser_id(),
+            'userId' => $this->getUserid(),
             'requestKey' => $this->getRequstKey(),
             'requestTime' => $this->getRequestTime(),
         );
@@ -34,8 +34,8 @@ class Password extends AbstractEntity
         foreach ($data as $field => $value) {
             $field = strtolower($field);
             switch ($field) {
-                case 'user_id':
-                    $this->setUser_id($value);
+                case 'userid':
+                    $this->setUserId($value);
                     break;
 
                 case 'requestkey':
@@ -51,10 +51,19 @@ class Password extends AbstractEntity
         return $this;
     }
 
+    public function generateRequestKey()
+    {
+        $this->setRequestKey(strtoupper(substr(sha1(
+            $this->getUserId() .
+            '####' .
+            $this->getRequestTime()->format('U')
+        ),0,15)));
+    }
+
     public function getFieldMapWriteable()
     {
         return [
-            'user_id' => 'user_id',
+            'userId' => 'user_id',
             'requestKey' => 'request_key',
             'requestTime' => 'request_time',
        ];
@@ -78,14 +87,14 @@ class Password extends AbstractEntity
         . 'ever');
     }
 
-    public function getUser_id()
+    public function getUserId()
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
-    public function setUser_id($id)
+    public function setUserId($id)
     {
-        $this->user_id = $id;
+        $this->userId = $id;
 
         return $this;
     }

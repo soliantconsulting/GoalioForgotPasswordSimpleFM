@@ -40,7 +40,7 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'Zend\Stdlib\Hydrator\ArraySerializable' => 'Zend\Stdlib\Hydrator\ArraySerializable',
+#                'Zend\Stdlib\Hydrator\ArraySerializable' => 'Zend\Stdlib\Hydrator\ArraySerializable',
             ),
             'factories' => array(
                 'goalioforgotpassword_password_mapper' => function ($sm)
@@ -48,7 +48,7 @@ class Module implements
                     $mapper = new Mapper\Password();
                     $mapper->setDbAdapter($sm->get('simplefm'));
                     $mapper->setHydrator($sm->get('Zend\Stdlib\Hydrator\ArraySerializable'));
-                    $mapper->setEntityPrototype(new \Soliant\ZfcUserSimpleFm\Entity\Password);
+                    $mapper->setEntityPrototype(new \Soliant\GoalioForgotPasswordSimpleFM\Entity\Password());
                     $mapper->init(); # work around for constuctor params in ancestor
 
                     return $mapper;
